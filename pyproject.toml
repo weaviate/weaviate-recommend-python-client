@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "weaviate-recommend-client"
+version = "0.1.0"
+description = "Python client for Weaviate Recommend."
+authors = ["Charles Pierse <hello@weaviate.io>"]
+license = "BSD 3-clause"
+readme = "README.md"
+packages = [{include = "weaviate_recommend"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9" # We actually support 3.8, but dev dependencies require 3.9
+weaviate-client = "^4.6.5"
+pydantic = "^2.7.4"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+pre-commit = "^3.7.1"
+types-requests = "^2.32.0.20240622"
+mypy = "^1.10.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

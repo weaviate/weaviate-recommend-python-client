@@ -9,6 +9,7 @@ from weaviate_recommend.services import (
     _Item,
     _Recommendation,
     _RecommenderManagement,
+    _Trainer,
     _User,
 )
 
@@ -19,6 +20,7 @@ class WeaviateRecommendClient:
         self.base_url = f"{url}/v1"
 
         self._recommender_management = _RecommenderManagement(self)
+        self._trainer = _Trainer(self)
         self.recommendation = _Recommendation(self)
         self.endpoint = _ConfiguredEndpoints(self)
         self.item = _Item(self)
@@ -47,6 +49,17 @@ class WeaviateRecommendClient:
         text_search_property_name: Union[str, None] = None,
         trainable_properties: Union[List[str], None] = None,
     ):
+        """
+        Create a new recommender.
+
+        Args:
+            name (str): _description_
+            properties (Dict[str, DataType]): _description_
+            user_properties (Dict[str, DataType]): _description_
+            user_interaction_property_names (List[str]): _description_
+            text_search_property_name (Union[str, None], optional): _description_. Defaults to None.
+            trainable_properties (Union[List[str], None], optional): _description_. Defaults to None.
+        """
         self._recommender_management.create(
             name,
             properties,
@@ -57,7 +70,28 @@ class WeaviateRecommendClient:
         )
 
     def delete(self):
+        """
+        Delete the recommender.
+        """
         self._recommender_management.delete()
 
     def details(self):
+        """
+        Get details about the recommender.
+        """
         return self._recommender_management.details()
+
+    def train(self, overwrite: bool = False):
+        """
+        Triggers the recommender training.
+
+        Args:
+            overwrite (bool, optional): _description_. Defaults to False.
+        """
+        self._trainer.train(overwrite)
+
+    def train_status(self):
+        """
+        Get the training status of the recommender.
+        """
+        return self._trainer.status()

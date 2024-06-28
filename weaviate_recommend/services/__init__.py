@@ -4,3 +4,4 @@ from .data.user import _User  # noqa: F401
 from .recommendations.base import _Recommendation  # noqa: F401
 from .recommendations.item import _ItemRecommendation  # noqa: F401
 from .recommender_management import _RecommenderManagement  # noqa: F401
+from .trainer import _Trainer  # noqa: F401

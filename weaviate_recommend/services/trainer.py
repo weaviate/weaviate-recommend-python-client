@@ -3,6 +3,10 @@ from typing import TYPE_CHECKING
 import requests
 
 from weaviate_recommend.exceptions import RecommendApiException
+from weaviate_recommend.models.responses import (
+    TrainingStatusResponse,
+    TrainRecommenderResponse,
+)
 
 if TYPE_CHECKING:
     from weaviate_recommend import WeaviateRecommendClient
@@ -13,7 +17,7 @@ class _Trainer:
         self.client = client
         self.endpoint_url = f"{self.client.base_url}/train/"
 
-    def train(self, overwrite: bool = False):
+    def train(self, overwrite: bool = False) -> TrainRecommenderResponse:
         """
         Triggers the recommender training.
         """
@@ -21,13 +25,15 @@ class _Trainer:
         response = requests.post(self.endpoint_url, json=params)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
 
-    def status(self):
+        return TrainRecommenderResponse.model_validate(response.json())
+
+    def status(self) -> TrainingStatusResponse:
         """
         Get the training status.
         """
         response = requests.get(self.endpoint_url + "status")
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+
+        return TrainingStatusResponse.model_validate(response.json())

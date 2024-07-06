@@ -5,6 +5,7 @@ import requests
 
 from weaviate_recommend.exceptions import RecommendApiException
 from weaviate_recommend.models.filter import FilterConfig
+from weaviate_recommend.models.responses import RecommendationsResponse
 
 if TYPE_CHECKING:
     from weaviate_recommend import WeaviateRecommendClient
@@ -22,7 +23,7 @@ class _ItemRecommendation:
         limit: int = 10,
         remove_reference: bool = False,
         filters: List[FilterConfig] = [],
-    ) -> dict:
+    ) -> RecommendationsResponse:
         """
         Get recommendations for a single item.
         """
@@ -43,7 +44,7 @@ class _ItemRecommendation:
         response = requests.post(self.endpoint_url + "item", json=params)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return RecommendationsResponse.model_validate(response.json())
 
     def from_items(
         self,
@@ -51,7 +52,7 @@ class _ItemRecommendation:
         limit: int = 10,
         remove_reference: bool = True,
         filters: list[FilterConfig] | None = None,
-    ):
+    ) -> RecommendationsResponse:
         """
         Get recommendations for multiple items.
         """
@@ -74,7 +75,7 @@ class _ItemRecommendation:
         response = requests.post(self.endpoint_url + "items", json=params)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return RecommendationsResponse.model_validate(response.json())
 
     def from_item_configured(
         self,
@@ -82,7 +83,7 @@ class _ItemRecommendation:
         item_id: Union[str, UUID],
         limit: int = 10,
         remove_reference: bool = True,
-    ):
+    ) -> RecommendationsResponse:
         """
         Get recommendations for a given item based on a configured endpoint.
         """
@@ -99,7 +100,7 @@ class _ItemRecommendation:
         response = requests.post(self.endpoint_url + "item/configured", json=params)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return RecommendationsResponse.model_validate(response.json())
 
     def from_items_configured(
         self,
@@ -107,7 +108,7 @@ class _ItemRecommendation:
         item_ids: List[Union[str, UUID]],
         limit: int = 10,
         remove_reference: bool = True,
-    ):
+    ) -> RecommendationsResponse:
         """
         Get recommendations for multiple items based on a configured endpoint.
         """
@@ -126,7 +127,7 @@ class _ItemRecommendation:
         response = requests.post(self.endpoint_url + "items/configured", json=params)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return RecommendationsResponse.model_validate(response.json())
 
     def from_user(
         self,
@@ -135,7 +136,7 @@ class _ItemRecommendation:
         remove_reference: bool = True,
         shuffle: bool = True,
         top_n_interactions: int = 100,
-    ):
+    ) -> RecommendationsResponse:
         """
         Get recommendations for a given user.
         """
@@ -151,14 +152,14 @@ class _ItemRecommendation:
         response = requests.post(self.endpoint_url + "user", json=params)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return RecommendationsResponse.model_validate(response.json())
 
     def from_users(
         self,
         user_ids: list[UUID | str],
         limit: int = 10,
         remove_reference: bool = True,
-    ):
+    ) -> RecommendationsResponse:
         """
         Get recommendations for multiple users.
         """
@@ -174,4 +175,4 @@ class _ItemRecommendation:
         response = requests.post(self.endpoint_url + "users", json=params)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return RecommendationsResponse.model_validate(response.json())

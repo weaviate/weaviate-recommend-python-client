@@ -7,7 +7,7 @@ from weaviate_recommend.models.filter import FilterConfig
 from weaviate_recommend.models.train import TRAINING_STATE
 
 
-class ConfiguredEndpointResponse(BaseModel):
+class CreateConfiguredEndpointResponse(BaseModel):
     endpoint_name: str
     from_: Literal["item", "items", "user", "users"] = Field(alias="from")
     to: Literal[

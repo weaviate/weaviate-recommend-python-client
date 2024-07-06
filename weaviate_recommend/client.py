@@ -4,6 +4,14 @@ import requests
 from weaviate.classes.config import DataType
 
 from weaviate_recommend.exceptions import RecommendApiException
+from weaviate_recommend.models.responses import (
+    TRAINING_STATE,
+    CreateRecommenderResponse,
+    DeleteRecommenderResponse,
+    RecommenderDetailsResponse,
+    TrainingStatusResponse,
+    TrainRecommenderResponse,
+)
 from weaviate_recommend.services import (
     _ConfiguredEndpoints,
     _Item,
@@ -31,8 +39,8 @@ class WeaviateRecommendClient:
         if response.status_code != 200:
             raise RecommendApiException(response.text)
 
-    def _training_state(self) -> str:
-        return self._recommender_management.details()["training_state"]
+    def _training_state(self) -> TRAINING_STATE:
+        return self._recommender_management.details().training_state
 
     def is_trained(self) -> bool:
         return self._training_state() == "trained"
@@ -48,7 +56,7 @@ class WeaviateRecommendClient:
         user_interaction_property_names: List[str],
         text_search_property_name: Union[str, None] = None,
         trainable_properties: Union[List[str], None] = None,
-    ):
+    ) -> CreateRecommenderResponse:
         """
         Create a new recommender.
 
@@ -60,7 +68,7 @@ class WeaviateRecommendClient:
             text_search_property_name (Union[str, None], optional): _description_. Defaults to None.
             trainable_properties (Union[List[str], None], optional): _description_. Defaults to None.
         """
-        self._recommender_management.create(
+        return self._recommender_management.create(
             name,
             properties,
             user_properties,
@@ -69,28 +77,28 @@ class WeaviateRecommendClient:
             trainable_properties,
         )
 
-    def delete(self):
+    def delete(self) -> DeleteRecommenderResponse:
         """
         Delete the recommender.
         """
-        self._recommender_management.delete()
+        return self._recommender_management.delete()
 
-    def details(self):
+    def details(self) -> RecommenderDetailsResponse:
         """
         Get details about the recommender.
         """
         return self._recommender_management.details()
 
-    def train(self, overwrite: bool = False):
+    def train(self, overwrite: bool = False) -> TrainRecommenderResponse:
         """
         Triggers the recommender training.
 
         Args:
             overwrite (bool, optional): _description_. Defaults to False.
         """
-        self._trainer.train(overwrite)
+        return self._trainer.train(overwrite)
 
-    def train_status(self):
+    def train_status(self) -> TrainingStatusResponse:
         """
         Get the training status of the recommender.
         """

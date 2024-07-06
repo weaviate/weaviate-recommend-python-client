@@ -4,6 +4,11 @@ import requests
 from weaviate.classes.config import DataType
 
 from weaviate_recommend.exceptions import RecommendApiException
+from weaviate_recommend.models.responses import (
+    CreateRecommenderResponse,
+    DeleteRecommenderResponse,
+    RecommenderDetailsResponse,
+)
 
 if TYPE_CHECKING:
     from weaviate_recommend import WeaviateRecommendClient
@@ -23,7 +28,7 @@ class _RecommenderManagement:
         user_interaction_property_names: List[str],
         text_search_property_name: Union[str, None] = None,
         trainable_properties: Union[List[str], None] = None,
-    ):
+    ) -> CreateRecommenderResponse:
         """
         Creates a new recommender.
         """
@@ -39,7 +44,7 @@ class _RecommenderManagement:
         response = requests.post(self.endpoint_url, json=params)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return CreateRecommenderResponse.model_validate(response.json())
 
     def delete(self):
         """
@@ -48,7 +53,7 @@ class _RecommenderManagement:
         response = requests.delete(self.endpoint_url)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return DeleteRecommenderResponse.model_validate(response.json())
 
     def details(self):
         """
@@ -57,4 +62,4 @@ class _RecommenderManagement:
         response = requests.get(self.endpoint_url + "details")
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return RecommenderDetailsResponse.model_validate(response.json())

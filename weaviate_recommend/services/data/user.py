@@ -5,6 +5,10 @@ import requests
 
 from weaviate_recommend.exceptions import RecommendApiException
 from weaviate_recommend.models.data import UserInteraction
+from weaviate_recommend.models.responses import (
+    AddUserInteractionResponse,
+    AddUserInteractionsResponse,
+)
 from weaviate_recommend.utils import get_datetime
 
 if TYPE_CHECKING:
@@ -24,7 +28,7 @@ class _User:
         interaction_property_name: str,
         weight: float = 1.0,
         created_at: Union[str, None] = None,
-    ):
+    ) -> AddUserInteractionResponse:
         """
         Add a user interaction.
         """
@@ -45,9 +49,11 @@ class _User:
         response = requests.post(self.endpoint_url, json=data)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return AddUserInteractionResponse.model_validate(response.json())
 
-    def add_interactions(self, interactions: list[UserInteraction]):
+    def add_interactions(
+        self, interactions: list[UserInteraction]
+    ) -> AddUserInteractionsResponse:
         """
         Add multiple user interactions.
         """
@@ -58,4 +64,4 @@ class _User:
         response = requests.post(self.endpoint_url + "batch", json=data)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return AddUserInteractionsResponse.model_validate(response.json())

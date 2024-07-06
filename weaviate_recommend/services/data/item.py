@@ -5,6 +5,11 @@ import requests
 
 from weaviate_recommend.exceptions import RecommendApiException
 from weaviate_recommend.models.data import RecommenderItem
+from weaviate_recommend.models.responses import (
+    AddItemResponse,
+    AddItemsResponse,
+    DeleteItemResponse,
+)
 
 if TYPE_CHECKING:
     from weaviate_recommend import WeaviateRecommendClient
@@ -15,7 +20,9 @@ class _Item:
         self.client = client
         self.endpoint_url = f"{self.client.base_url}/item/"
 
-    def add(self, item_id: Union[str, UUID], properties: Dict[str, Any]):
+    def add(
+        self, item_id: Union[str, UUID], properties: Dict[str, Any]
+    ) -> AddItemResponse:
         """
         Add a new item to the recommender.
         """
@@ -30,9 +37,9 @@ class _Item:
         response = requests.post(self.endpoint_url, json=params)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return AddItemResponse.model_validate(response.json())
 
-    def add_batch(self, items: List[RecommenderItem]):
+    def add_batch(self, items: List[RecommenderItem]) -> AddItemsResponse:
         """
         Add multiple items to the recommender.
         """
@@ -41,9 +48,9 @@ class _Item:
         response = requests.post(self.endpoint_url + "batch", json=params)
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return AddItemsResponse.model_validate(response.json())
 
-    def delete(self, uuid: UUID | str):
+    def delete(self, uuid: UUID | str) -> DeleteItemResponse:
         """
         Delete an item from the recommender.
         """
@@ -53,4 +60,4 @@ class _Item:
         response = requests.delete(self.endpoint_url + str(uuid))
         if response.status_code != 200:
             raise RecommendApiException(response.text)
-        return response.json()
+        return DeleteItemResponse.model_validate(response.json())

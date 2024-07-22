@@ -43,7 +43,13 @@ class _Item:
         """
         Add multiple items to the recommender.
         """
-        params = [item.model_dump_json() for item in items]
+        params = [
+            {
+                "id": str(item.id),
+                "properties": item.properties,
+            }
+            for item in items
+        ]
 
         response = requests.post(self.endpoint_url + "batch", json=params)
         if response.status_code != 200:

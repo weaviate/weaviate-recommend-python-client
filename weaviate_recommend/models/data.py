@@ -5,10 +5,10 @@ from pydantic import BaseModel, field_validator
 
 
 class RecommenderItem(BaseModel):
-    uuid: Union[str, UUID]
+    id: Union[str, UUID]
     properties: Dict[str, Any]
 
-    @field_validator("uuid")
+    @field_validator("id")
     def validate_uuid(cls, value):
         # if the values is a string, try to convert it to a UUID object
         if isinstance(value, str):

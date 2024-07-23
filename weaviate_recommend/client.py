@@ -1,13 +1,16 @@
 from typing import Dict, List, Union
+from uuid import UUID
 
 import requests
 from weaviate.classes.config import DataType
 
 from weaviate_recommend.exceptions import RecommendApiException
+from weaviate_recommend.models.filter import FilterConfig
 from weaviate_recommend.models.responses import (
     TRAINING_STATE,
     CreateRecommenderResponse,
     DeleteRecommenderResponse,
+    PersonalisedSearchResponse,
     RecommenderDetailsResponse,
     TrainingStatusResponse,
     TrainRecommenderResponse,
@@ -15,6 +18,7 @@ from weaviate_recommend.models.responses import (
 from weaviate_recommend.services import (
     _ConfiguredEndpoints,
     _Item,
+    _PersonalisedSearch,
     _Recommendation,
     _RecommenderManagement,
     _Trainer,
@@ -29,6 +33,7 @@ class WeaviateRecommendClient:
 
         self._recommender_management = _RecommenderManagement(self)
         self._trainer = _Trainer(self)
+        self._search = _PersonalisedSearch(self)
         self.recommendation = _Recommendation(self)
         self.endpoint = _ConfiguredEndpoints(self)
         self.item = _Item(self)
@@ -103,3 +108,16 @@ class WeaviateRecommendClient:
         Get the training status of the recommender.
         """
         return self._trainer.status()
+
+    def search(
+        self,
+        text: str,
+        user_id: str | UUID,
+        limit: int = 10,
+        influence_factor: float = 0.2,
+        filters: list[FilterConfig] | None = None,
+    ) -> PersonalisedSearchResponse:
+        """
+        Search for text in the Weaviate database and return the results personalised for the user.
+        """
+        return self._search.search(text, user_id, limit, influence_factor, filters)

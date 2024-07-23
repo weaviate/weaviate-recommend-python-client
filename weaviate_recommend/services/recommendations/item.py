@@ -15,7 +15,7 @@ class _ItemRecommendation:
 
     def __init__(self, client: "WeaviateRecommendClient"):
         self.client = client
-        self.endpoint_url = f"{self.client.base_url}/item-recommendation/"
+        self.endpoint_url = f"{self.client.base_url}/item-recommendations/"
 
     def from_item(
         self,

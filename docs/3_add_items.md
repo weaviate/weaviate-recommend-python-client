@@ -19,3 +19,13 @@ wrc.add_items(
     ]
 )
 ```
+## Add Interaction
+
+```python
+wrc.add_user_interaction(
+    user_id = user_id,
+    item_id = wine_id,
+    interaction_property_name = interaction_type,
+    weight = weight
+)
+```

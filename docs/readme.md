@@ -3,10 +3,10 @@
 Get started with the Weaviate Recommender Service!
 
 This documentation contains 7 main parts to get you up and running:
-- Connect to Service
-- Recommender Schema
-- Add Items
-- Train
-- Recommend Items
-- Personalized Search
-- Roadmap
+1. Connect to Service
+2. Recommender Schema
+3. Add Items
+4. Train
+5. Recommend Items
+6. Personalized Search
+7. Roadmap

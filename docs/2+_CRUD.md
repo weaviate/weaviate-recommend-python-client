@@ -1,4 +1,6 @@
-# Create Recommender Schema
+# Recommender CRUD APIs
+
+## Create Schema
 
 ```python
 wrc.create(
@@ -23,4 +25,20 @@ wrc.create(
     user_interaction_property_names = ["purchase", "like", "dislike"],
     text_search_property_name = "wineName"
 )
+```
+
+## Delete
+
+```python
+wrc.delete()
+```
+
+## Meta
+
+```python
+wrc.details()
+```
+
+```python
+wrc.is_trained()
 ```

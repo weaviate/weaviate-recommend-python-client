@@ -50,24 +50,6 @@ print("Training completed!")
 - Periodically to incorporate new items and user interactions
 - After significant changes in your data or user behavior patterns
 
-## Best Practices
-
-1. Ensure you have enough data (items and interactions) before training for meaningful results.
-2. Schedule regular training intervals to keep recommendations fresh.
-3. Monitor training time and frequency to optimize system performance.
-4. Consider training during off-peak hours for production systems.
-
-## Retraining
-
-To retrain an already trained system:
-
-```python
-response = wrc.train(overwrite_existing=True)
-print(response)
-```
-
-This will start a new training process, overwriting the existing trained model.
-
 ## Next Steps
 
 Once your recommender system is trained, you can start generating recommendations. See `recommend.md` for information on how to request and use recommendations.

@@ -53,7 +53,7 @@ for item in results.results:
     print("---")
 ```
 
-## Customizing Search
+## Adding Filters
 
 You can further customize the search by adding filters:
 

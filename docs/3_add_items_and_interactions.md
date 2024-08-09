@@ -9,6 +9,8 @@ This guide explains how to add items to your recommender system and record user 
 
 ## Adding Items
 
+This ensures items stored in Weaviate are represented with the vector from the Recommender model.
+
 ### Adding a Single Item
 
 To add a single item:

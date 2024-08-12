@@ -17,19 +17,35 @@ Training the recommender system is an asynchronous process. Here's how to initia
 To start the training process:
 
 ```python
-response = wrc.train()
+response = client.train()
 print(response)
 ```
 
 This will return a message indicating that training has started.
+
+### Overwrite Trained Model
+
+Pass in an extra `overwrite=True` flag to overwrite the currently trained model and create a new one.
+
+```python
+response = client.train(overwrite=True)
+print(response)
+```
 
 ### Checking Training Status
 
 To check if the training is complete:
 
 ```python
-is_trained = wrc.is_trained()
+is_trained = client.is_trained()
 print(is_trained)  # Returns True if trained, False otherwise
+```
+
+If there is an error, it can be seen with:
+
+```python
+status = client.train_status()
+print(status)
 ```
 
 You can use this in a loop to wait for training completion:
@@ -37,7 +53,7 @@ You can use this in a loop to wait for training completion:
 ```python
 import time
 
-while not wrc.is_trained():
+while not client.is_trained():
     print("Training in progress...")
     time.sleep(10)  # Wait for 10 seconds before checking again
 

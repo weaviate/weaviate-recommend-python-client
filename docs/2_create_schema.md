@@ -39,6 +39,7 @@ client.create(
 
 - `collection_name`: Name of your item collection.
 - `properties`: Dictionary of item properties and their data types.
+- `trainable_properties`: Properties used to compute the item vector representation.
 - `user_properties`: Dictionary of user properties and their data types.
 - `user_interaction_property_names`: List of interaction types you want to track.
 - `text_search_property_name`: Property to be used for text-based searches.
@@ -48,7 +49,7 @@ client.create(
 After creating the schema, you can verify it using the `details` method:
 
 ```python
-details = wrc.details()
+details = client.details()
 print(details)
 ```
 
@@ -59,7 +60,7 @@ This will show you the current configuration of your recommender.
 To modify an existing schema, you need to delete the current recommender and create a new one:
 
 ```python
-wrc.delete()
+client.delete()
 # Then create a new schema as shown above
 ```
 

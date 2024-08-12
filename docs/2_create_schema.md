@@ -14,7 +14,7 @@ To create the recommender schema, use the `create` method of your `WeaviateRecom
 ```python
 import weaviate.classes.config as wvcc
 
-wrc.create(
+client.create(
     collection_name="MyCollection",
     properties={
         "property1": wvcc.DataType.TEXT,
@@ -22,6 +22,10 @@ wrc.create(
         "property3": wvcc.DataType.TEXT_ARRAY,
         # Add more properties as needed
     },
+    trainable_properties=[
+        "property1",
+        "property2"
+    ]
     user_properties={
         "user_property1": wvcc.DataType.NUMBER,
         # Add more user properties as needed

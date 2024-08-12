@@ -13,11 +13,9 @@ This guide explains how to use the personalized search feature of the recommende
 To perform a personalized search:
 
 ```python
-user_id = "user123"
-search_query = "red wine"
-results = wrc.search(
-    text=search_query,
-    user_id=user_id,
+results = client.search(
+    text="iPhone",
+    user_id="user1",
     limit=10,
     influence_factor=0.2
 )
@@ -64,7 +62,7 @@ filters = [
     FilterConfig(property_name="country", operator="Equal", value="France")
 ]
 
-results = wrc.search(
+results = client.search(
     text="red wine",
     user_id="user123",
     limit=10,

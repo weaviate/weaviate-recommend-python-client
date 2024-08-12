@@ -24,7 +24,7 @@ item_properties = {
     # Include all properties defined in your schema
 }
 
-response = wrc.add_item(item_id, item_properties)
+response = client.item.add(item_id, item_properties)
 print(response)
 ```
 
@@ -33,7 +33,7 @@ print(response)
 To add multiple items efficiently:
 
 ```python
-from client.models import RecommenderItem
+from weaviate_recommend.models.data import RecommenderItem
 
 items = [
     RecommenderItem(uuid="id1", properties={"property1": "value1", ...}),
@@ -41,21 +41,23 @@ items = [
     # Add more items as needed
 ]
 
-response = wrc.add_items(items)
+response = client.item.add_batch(items)
 print(response)
 ```
 
 ## Recording User Interactions
 
-To record user interactions with items:
+To record a single user interactions with an item:
 
 ```python
+from weaviate_recommend.models.data import UserInteraction
+
 user_id = "user123"
 item_id = "item456"
 interaction_type = "purchase"  # Or "like", "view", etc. as defined in your schema
 weight = 1.0  # Interaction strength, typically between -1 and 1
 
-response = wrc.add_user_interaction(
+response = client.user.add_interaction(
     user_id=user_id,
     item_id=item_id,
     interaction_property_name=interaction_type,
@@ -70,19 +72,18 @@ For bulk addition of user interactions:
 
 ```python
 interactions = [
-    {"user_id": "user1", "item_id": "item1", "interaction_property_name": "purchase", "weight": 1.0},
-    {"user_id": "user1", "item_id": "item2", "interaction_property_name": "like", "weight": 0.5},
-    # Add more interactions as needed
+    UserInteraction(user_id="user1", "item_id": "1", "interaction_property_name": "purchase", "weight": 1.0},
+    UserInteraction(user_id="user1", "item_id": "4", "interaction_property_name": "purchase", "weight": 0.5},
+    # add more items as needed
 ]
 
-for interaction in interactions:
-    wrc.add_user_interaction(**interaction)
+client.user.add_interactions(interactions)
 ```
 
 ## Best Practices
 
 1. Ensure all required properties are included when adding items.
-2. Use batch operations (`add_items`) for adding multiple items efficiently.
+2. Use batch operations for adding multiple items or user interactions efficiently.
 3. Choose appropriate weights for user interactions to reflect their importance.
 4. Regularly add user interactions to keep the recommender system up-to-date.
 

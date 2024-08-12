@@ -12,9 +12,9 @@ This guide explains how to create and use configured endpoints, which allow you 
 To create a configured endpoint:
 
 ```python
-from client.models import FilterConfig
+from weaviate_recommend.models.data import FilterConfig
 
-response = wrc.create_configured_endpoint(
+response = client.endpoint.create(
     endpoint_name="my-custom-endpoint",
     from_type="item",
     to_type="items",
@@ -32,6 +32,20 @@ response = wrc.create_configured_endpoint(
     ]
 )
 print(response)
+```
+
+## Query Configured Endpoint
+
+```python
+results = client.recommendation.item.from_item_configured(
+    endpoint_name="my-custom-endpoint", item_id="1", limit=10, remove_references=True
+)
+```
+
+## Delete Configured Endpoint
+
+```python
+client.endpoint.delete(endpoint_name="my-custom-endpoint")
 ```
 
 ### Parameters:

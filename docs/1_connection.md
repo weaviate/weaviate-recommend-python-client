@@ -14,7 +14,7 @@ To connect to the Recommender Service, use the `WeaviateRecommendClient` class:
 from client import WeaviateRecommendClient
 
 # Replace with your service URL
-service_url = "http://127.0.0.1:8000"
+service_url = "YOUR_SERVICE_URL"
 
 # Create a client instance
 wrc = WeaviateRecommendClient(service_url)

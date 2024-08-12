@@ -11,13 +11,13 @@ This guide explains how to establish a connection to the Weaviate Recommender Se
 To connect to the Recommender Service, use the `WeaviateRecommendClient` class:
 
 ```python
-from client import WeaviateRecommendClient
+from weaviate_recommend import WeaviateRecommendClient
 
 # Replace with your service URL
 service_url = "YOUR_SERVICE_URL"
 
 # Create a client instance
-wrc = WeaviateRecommendClient(service_url)
+client = WeaviateRecommendClient(service_url)
 ```
 
 To get an API key for the Weaviate Recommender service, please sign up for our [Beta testing program here](https://weaviate.io/workbench/recommender)!
@@ -27,7 +27,7 @@ To get an API key for the Weaviate Recommender service, please sign up for our [
 After creating the client instance, you can verify the connection by checking the service details:
 
 ```python
-details = wrc.details()
+details = client.details()
 print(details)
 ```
 

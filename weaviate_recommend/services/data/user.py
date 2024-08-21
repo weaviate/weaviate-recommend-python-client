@@ -9,7 +9,7 @@ from weaviate_recommend.models.responses import (
     AddUserInteractionResponse,
     AddUserInteractionsResponse,
 )
-from weaviate_recommend.utils import get_datetime
+from weaviate_recommend.utils import get_auth_header, get_datetime
 
 if TYPE_CHECKING:
     from weaviate_recommend import WeaviateRecommendClient
@@ -46,7 +46,9 @@ class _User:
             "created_at": created_at,
         }
 
-        response = requests.post(self.endpoint_url, json=data)
+        response = requests.post(
+            self.endpoint_url, json=data, headers=get_auth_header(self.client._api_key)
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return AddUserInteractionResponse.model_validate(response.json())
@@ -61,7 +63,11 @@ class _User:
         for interaction in data:
             if not interaction["created_at"]:
                 interaction["created_at"] = get_datetime()
-        response = requests.post(self.endpoint_url + "batch", json=data)
+        response = requests.post(
+            self.endpoint_url + "batch",
+            json=data,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return AddUserInteractionsResponse.model_validate(response.json())

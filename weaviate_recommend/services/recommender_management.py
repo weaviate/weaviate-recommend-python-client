@@ -9,6 +9,7 @@ from weaviate_recommend.models.responses import (
     DeleteRecommenderResponse,
     RecommenderDetailsResponse,
 )
+from weaviate_recommend.utils import get_auth_header
 
 if TYPE_CHECKING:
     from weaviate_recommend import WeaviateRecommendClient
@@ -41,7 +42,11 @@ class _RecommenderManagement:
             "trainable_properties": trainable_properties,
         }
 
-        response = requests.post(self.endpoint_url, json=params)
+        response = requests.post(
+            self.endpoint_url,
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return CreateRecommenderResponse.model_validate(response.json())
@@ -50,7 +55,9 @@ class _RecommenderManagement:
         """
         Deletes the recommender.
         """
-        response = requests.delete(self.endpoint_url)
+        response = requests.delete(
+            self.endpoint_url, headers=get_auth_header(self.client._api_key)
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return DeleteRecommenderResponse.model_validate(response.json())
@@ -59,7 +66,9 @@ class _RecommenderManagement:
         """
         Get details about the recommender.
         """
-        response = requests.get(self.endpoint_url + "details")
+        response = requests.get(
+            self.endpoint_url + "details", headers=get_auth_header(self.client._api_key)
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return RecommenderDetailsResponse.model_validate(response.json())

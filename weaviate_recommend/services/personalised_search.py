@@ -6,6 +6,7 @@ import requests
 from weaviate_recommend.exceptions import RecommendApiException
 from weaviate_recommend.models.filter import FilterConfig
 from weaviate_recommend.models.responses import PersonalisedSearchResponse
+from weaviate_recommend.utils import get_auth_header
 
 if TYPE_CHECKING:
     from weaviate_recommend import WeaviateRecommendClient
@@ -42,7 +43,11 @@ class _PersonalisedSearch:
             "filters": _filters,
         }
 
-        response = requests.post(self.endpoint_url, json=params)
+        response = requests.post(
+            self.endpoint_url,
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return PersonalisedSearchResponse.model_validate(response.json())

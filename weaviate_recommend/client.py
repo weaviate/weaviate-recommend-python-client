@@ -27,10 +27,10 @@ from weaviate_recommend.services import (
 
 
 class WeaviateRecommendClient:
-    def __init__(self, url: str):
+    def __init__(self, url: str, api_key: str):
         self._url = url
         self.base_url = f"{url}/v1"
-
+        self._api_key = api_key
         self._recommender_management = _RecommenderManagement(self)
         self._trainer = _Trainer(self)
         self._search = _PersonalisedSearch(self)

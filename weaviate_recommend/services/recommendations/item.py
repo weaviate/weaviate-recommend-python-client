@@ -6,6 +6,7 @@ import requests
 from weaviate_recommend.exceptions import RecommendApiException
 from weaviate_recommend.models.filter import FilterConfig
 from weaviate_recommend.models.responses import RecommendationsResponse
+from weaviate_recommend.utils import get_auth_header
 
 if TYPE_CHECKING:
     from weaviate_recommend import WeaviateRecommendClient
@@ -41,7 +42,11 @@ class _ItemRecommendation:
             "remove_reference": remove_reference,
             "filters": _filters,
         }
-        response = requests.post(self.endpoint_url + "item", json=params)
+        response = requests.post(
+            self.endpoint_url + "item",
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return RecommendationsResponse.model_validate(response.json())
@@ -72,7 +77,11 @@ class _ItemRecommendation:
             "remove_reference": remove_reference,
             "filters": _filters,
         }
-        response = requests.post(self.endpoint_url + "items", json=params)
+        response = requests.post(
+            self.endpoint_url + "items",
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return RecommendationsResponse.model_validate(response.json())
@@ -97,7 +106,11 @@ class _ItemRecommendation:
             "remove_reference": remove_reference,
         }
 
-        response = requests.post(self.endpoint_url + "item/configured", json=params)
+        response = requests.post(
+            self.endpoint_url + "item/configured",
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return RecommendationsResponse.model_validate(response.json())
@@ -124,7 +137,11 @@ class _ItemRecommendation:
             "remove_reference": remove_reference,
         }
 
-        response = requests.post(self.endpoint_url + "items/configured", json=params)
+        response = requests.post(
+            self.endpoint_url + "items/configured",
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return RecommendationsResponse.model_validate(response.json())
@@ -149,7 +166,11 @@ class _ItemRecommendation:
             "shuffle": shuffle,
             "top_n_interactions": top_n_interactions,
         }
-        response = requests.post(self.endpoint_url + "user", json=params)
+        response = requests.post(
+            self.endpoint_url + "user",
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return RecommendationsResponse.model_validate(response.json())
@@ -172,7 +193,11 @@ class _ItemRecommendation:
             "limit": limit,
             "remove_reference": remove_reference,
         }
-        response = requests.post(self.endpoint_url + "users", json=params)
+        response = requests.post(
+            self.endpoint_url + "users",
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return RecommendationsResponse.model_validate(response.json())

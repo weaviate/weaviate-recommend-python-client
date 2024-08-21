@@ -10,6 +10,7 @@ from weaviate_recommend.models.responses import (
     AddItemsResponse,
     DeleteItemResponse,
 )
+from weaviate_recommend.utils import get_auth_header
 
 if TYPE_CHECKING:
     from weaviate_recommend import WeaviateRecommendClient
@@ -34,7 +35,11 @@ class _Item:
             "properties": properties,
         }
 
-        response = requests.post(self.endpoint_url, json=params)
+        response = requests.post(
+            self.endpoint_url,
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return AddItemResponse.model_validate(response.json())
@@ -51,7 +56,11 @@ class _Item:
             for item in items
         ]
 
-        response = requests.post(self.endpoint_url + "batch", json=params)
+        response = requests.post(
+            self.endpoint_url + "batch",
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return AddItemsResponse.model_validate(response.json())
@@ -63,7 +72,9 @@ class _Item:
         if isinstance(uuid, str):
             uuid = UUID(uuid)
 
-        response = requests.delete(self.endpoint_url + str(uuid))
+        response = requests.delete(
+            self.endpoint_url + str(uuid), headers=get_auth_header(self.client._api_key)
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return DeleteItemResponse.model_validate(response.json())

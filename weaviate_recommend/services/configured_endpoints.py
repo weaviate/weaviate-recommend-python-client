@@ -10,6 +10,7 @@ from weaviate_recommend.models.responses import (
     DeleteConfiguredEndpointResponse,
     ListConfiguredEndpointsResponse,
 )
+from weaviate_recommend.utils import get_auth_header
 
 if TYPE_CHECKING:
     from weaviate_recommend import WeaviateRecommendClient
@@ -36,7 +37,11 @@ class _ConfiguredEndpoints:
             "to": to_type,
             "filters": [filter.model_dump() for filter in filters],
         }
-        response = requests.post(self.endpoint_url, json=params)
+        response = requests.post(
+            self.endpoint_url,
+            json=params,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return CreateConfiguredEndpointResponse.model_validate(response.json())
@@ -45,7 +50,9 @@ class _ConfiguredEndpoints:
         """
         List all configured endpoints, and details about their configuration.
         """
-        response = requests.get(self.endpoint_url + "details")
+        response = requests.get(
+            self.endpoint_url + "details", headers=get_auth_header(self.client._api_key)
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return ListConfiguredEndpointsResponse.model_validate(response.json())
@@ -54,7 +61,10 @@ class _ConfiguredEndpoints:
         """
         Delete a configured endpoint.
         """
-        response = requests.delete(self.endpoint_url + endpoint_name)
+        response = requests.delete(
+            self.endpoint_url + endpoint_name,
+            headers=get_auth_header(self.client._api_key),
+        )
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return DeleteConfiguredEndpointResponse.model_validate(response.json())

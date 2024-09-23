@@ -23,7 +23,7 @@ class _ItemRecommendation:
         item_id: Union[str, UUID],
         limit: int = 10,
         remove_reference: bool = False,
-        filters: List[FilterConfig] = [],
+        filters: List[FilterConfig] | None = None,
     ) -> RecommendationsResponse:
         """
         Get recommendations for a single item.
@@ -32,9 +32,10 @@ class _ItemRecommendation:
         if isinstance(item_id, str):
             item_id = UUID(item_id)
 
-        _filters = (
-            [filter_config.model_dump() for filter_config in filters] if filters else []
-        )
+        if filters:
+            _filters = [filter_config.model_dump() for filter_config in filters]
+        else:
+            _filters = None
 
         params = {
             "id": str(item_id),
@@ -67,9 +68,10 @@ class _ItemRecommendation:
             for item_id in item_ids
         ]
 
-        _filters = (
-            [filter_config.model_dump() for filter_config in filters] if filters else []
-        )
+        if filters:
+            _filters = [filter_config.model_dump() for filter_config in filters]
+        else:
+            _filters = None
 
         params = {
             "ids": item_ids,

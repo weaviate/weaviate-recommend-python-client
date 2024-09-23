@@ -51,6 +51,16 @@ client.create(
 - `user_interaction_property_names`: List of interaction types you want to track.
 - `text_search_property_name`: Property to be used for text-based searches.
 
+> **Note: Trainable Properties**
+>
+> The `trainable_properties` parameter allows you to specify which properties will be used to compute the item vector representation.
+>
+> - Include properties that add predictive power to the recommendations. This typically includes most of your properties.
+> - You may want to exclude:
+>   - Properties that are just noise (e.g., UUIDs or other non-predictive identifiers)
+>   - Properties that you don't want to influence the recommendations.
+> - If you leave `trainable_properties` empty, the system will train on all properties
+
 ## Verifying the Schema
 
 After creating the schema, you can verify it using the `details` method:

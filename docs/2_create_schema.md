@@ -3,6 +3,13 @@
 ## Overview
 This guide explains how to create and configure the schema for your recommender system using the `WeaviateRecommendClient`.
 
+## Why do I need a Schema for the Recommender Service?
+
+The Recommender Service Schema lets you achieve two key features:
+
+1. Set Interaction Weights: The Recommender Schema enables weighting interactions such as "Add_To_Cart" more so than "Viewed_Item". This further lets you set negative weights for interactions such as "Dislike".
+2. Table Representation Learning (Advanced): Weaviate's Recommender Service leverages `BOOLEAN`, `INT`, `FLOAT`, and `TEXT`-encoded categories to compute vector representations.
+
 ## Prerequisites
 - Established connection to the Recommender Service (see `1_connection.md`)
 - Understanding of your data model and recommendation requirements

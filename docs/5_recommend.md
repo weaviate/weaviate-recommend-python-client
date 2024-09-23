@@ -23,7 +23,7 @@ print(recommendations)
 To get recommendations based on multiple items:
 
 ```python
-recommendations = clielnt.recommendation.item.from_items(item_ids["1", "2", "3"], limit=10, remove_references=True)
+recommendations = client.recommendation.item.from_items(item_ids["1", "2", "3"], limit=10, remove_references=True)
 print(recommendations)
 ```
 
@@ -42,7 +42,7 @@ print(recommendations)
 To get recommendations based on multiple users' preferences:
 
 ```python
-recommendations = client.recommendations.item.from_user(user_id=["user1","user2","user3"], limit=10,
+recommendations = client.recommendations.item.from_users(user_id=["user1","user2","user3"], limit=10,
                                                         remove_reference=True, top_n_interactions=100)
 print(recommendations)
 ```

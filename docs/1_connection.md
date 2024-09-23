@@ -15,9 +15,10 @@ from weaviate_recommend import WeaviateRecommendClient
 
 # Replace with your service URL
 service_url = "YOUR_SERVICE_URL"
+api_key = "YOUR_API_KEY"
 
 # Create a client instance
-client = WeaviateRecommendClient(service_url)
+client = WeaviateRecommendClient(service_url, api_key)
 ```
 
 To get an API key for the Weaviate Recommender service, please sign up for our [Beta testing program here](https://weaviate.io/workbench/recommender)!

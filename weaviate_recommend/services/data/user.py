@@ -1,13 +1,14 @@
-from typing import TYPE_CHECKING, Union
+from typing import TYPE_CHECKING, List, Union
 from uuid import UUID
 
 import requests
 
 from weaviate_recommend.exceptions import RecommendApiException
-from weaviate_recommend.models.data import UserInteraction
+from weaviate_recommend.models.data import User, UserInteraction
 from weaviate_recommend.models.responses import (
     AddUserInteractionResponse,
     AddUserInteractionsResponse,
+    CreateUserResponse,
 )
 from weaviate_recommend.utils import get_auth_header, get_datetime
 
@@ -54,7 +55,7 @@ class _User:
         return AddUserInteractionResponse.model_validate(response.json())
 
     def add_interactions(
-        self, interactions: list[UserInteraction]
+        self, interactions: List[UserInteraction]
     ) -> AddUserInteractionsResponse:
         """
         Add multiple user interactions.
@@ -71,3 +72,49 @@ class _User:
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return AddUserInteractionsResponse.model_validate(response.json())
+
+    def get_user_interactions(self, user_id: Union[str, UUID]) -> List[UserInteraction]:
+        """
+        Get all interactions for a user.
+        """
+        if isinstance(user_id, UUID):
+            user_id = str(user_id)
+
+        response = requests.get(
+            f"{self.endpoint_url}interactions/{user_id}",
+            headers=get_auth_header(self.client._api_key),
+        )
+        if response.status_code != 200:
+            raise RecommendApiException(response.text)
+        return [
+            UserInteraction.model_validate(interaction)
+            for interaction in response.json()
+        ]
+
+    def create_user(self, user: User) -> CreateUserResponse:
+        """
+        Create a new user in the recommender with the given properties, not including interactions.
+        """
+        response = requests.post(
+            f"{self.endpoint_url}create",
+            json=user.model_dump(),
+            headers=get_auth_header(self.client._api_key),
+        )
+        if response.status_code != 200:
+            raise RecommendApiException(response.text)
+        return CreateUserResponse.model_validate(response.json())
+
+    def get_user(self, user_id: Union[str, UUID]) -> User:
+        """
+        Get all properties for a user by ID.
+        """
+        if isinstance(user_id, UUID):
+            user_id = str(user_id)
+
+        response = requests.get(
+            f"{self.endpoint_url}{user_id}",
+            headers=get_auth_header(self.client._api_key),
+        )
+        if response.status_code != 200:
+            raise RecommendApiException(response.text)
+        return User.model_validate(response.json())

@@ -100,3 +100,7 @@ class AddUserInteractionResponse(BaseModel):
 class AddUserInteractionsResponse(BaseModel):
     message: str
     num_interactions_added: int
+
+
+class CreateUserResponse(BaseModel):
+    message: str

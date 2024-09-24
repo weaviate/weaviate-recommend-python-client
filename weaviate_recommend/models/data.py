@@ -24,3 +24,8 @@ class UserInteraction(BaseModel):
     interaction_property_name: str
     weight: float = 1.0
     created_at: Union[str, None] = None
+
+
+class User(BaseModel):
+    id: Union[str, UUID]
+    properties: Dict[str, Any]

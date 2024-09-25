@@ -87,7 +87,13 @@ class _User:
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return [
-            UserInteraction.model_validate(interaction)
+            UserInteraction(
+                user_id=interaction["id"],
+                item_id=interaction["item_id"],
+                interaction_property_name=interaction["interaction_property_name"],
+                weight=interaction["weight"],
+                created_at=interaction["created_at"],
+            )
             for interaction in response.json()
         ]
 

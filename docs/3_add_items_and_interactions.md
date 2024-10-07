@@ -117,7 +117,8 @@ response = client.user.add_interaction(
     user_id=user_id,
     item_id=item_id,
     interaction_property_name=interaction_type,
-    weight=weight
+    weight=weight,
+    remove_previous_interactions=False
 )
 print(response)
 ```
@@ -130,8 +131,8 @@ For bulk addition of user interactions:
 from weaviate_recommend.models.data import UserInteraction
 
 interactions = [
-    UserInteraction(user_id="user1", item_id="1", interaction_property_name="purchase", weight=1.0),
-    UserInteraction(user_id="user1", item_id="4", interaction_property_name="purchase", weight=0.5),
+    UserInteraction(user_id="user1", item_id="1", interaction_property_name="purchase", weight=1.0, remove_previous_interactions=False),
+    UserInteraction(user_id="user1", item_id="4", interaction_property_name="purchase", weight=0.5, remove_previous_interactions=False),
     # add more interactions as needed
 ]
 

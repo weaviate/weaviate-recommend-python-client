@@ -71,6 +71,36 @@ user = client.user.get_user(user_id)
 print(user)
 ```
 
+### Updating User Information
+
+To update a user's information:
+
+```python
+updated_user = User(id="user123", properties={"name": "John Smith", "age": 31})
+response = client.user.update_user(updated_user)
+print(response)
+```
+
+### Deleting a User
+
+To delete a user from the recommender system:
+
+```python
+user_id = "user123"
+response = client.user.delete_user(user_id)
+print(response)
+```
+
+### Checking if a User Exists
+
+To check if a user exists in the system:
+
+```python
+user_id = "user123"
+exists = client.user.exists(user_id)
+print(f"User exists: {exists}")
+```
+
 ## Recording User Interactions
 
 ### Adding a Single User Interaction
@@ -120,13 +150,43 @@ for interaction in interactions:
     print(f"Item: {interaction.item_id}, Type: {interaction.interaction_property_name}, Weight: {interaction.weight}")
 ```
 
+### Deleting User Interactions
+
+To delete all interactions for a user:
+
+```python
+user_id = "user123"
+response = client.user.delete_all_interactions(user_id)
+print(response)
+```
+
+To delete interactions for a specific property:
+
+```python
+user_id = "user123"
+interaction_property = "purchase"
+response = client.user.delete_interactions_by_property(user_id, interaction_property)
+print(response)
+```
+
+To delete interactions for a specific property and item:
+
+```python
+user_id = "user123"
+interaction_property = "purchase"
+item_id = "item456"
+response = client.user.delete_interactions_by_property_and_item(user_id, interaction_property, item_id)
+print(response)
+```
+
 ## Best Practices
 
 1. Ensure all required properties are included when adding items or creating users.
 2. Use batch operations for adding multiple items or user interactions efficiently.
 3. Choose appropriate weights for user interactions to reflect their importance.
 4. Regularly add user interactions to keep the recommender system up-to-date.
-5. Use the `get_user` and `get_user_interactions` methods to retrieve and analyze user data as needed.
+5. Use the various retrieval and deletion methods to manage user data and interactions as needed.
+6. Periodically clean up outdated or irrelevant user data and interactions to maintain system efficiency.
 
 ## Next Steps
 

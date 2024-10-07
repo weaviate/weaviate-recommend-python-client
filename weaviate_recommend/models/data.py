@@ -24,6 +24,7 @@ class UserInteraction(BaseModel):
     interaction_property_name: str
     weight: float = 1.0
     created_at: Union[str, None] = None
+    remove_previous_interactions: bool = False
 
 
 class User(BaseModel):

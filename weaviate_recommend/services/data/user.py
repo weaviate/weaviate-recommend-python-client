@@ -9,6 +9,8 @@ from weaviate_recommend.models.responses import (
     AddUserInteractionResponse,
     AddUserInteractionsResponse,
     CreateUserResponse,
+    DeleteUserResponse,
+    UpdateUserResponse,
 )
 from weaviate_recommend.utils import get_auth_header, get_datetime
 
@@ -124,3 +126,106 @@ class _User:
         if response.status_code != 200:
             raise RecommendApiException(response.text)
         return User.model_validate(response.json())
+
+    def update_user(self, user: User) -> UpdateUserResponse:
+        """
+        Update a user by ID.
+        """
+        response = requests.post(
+            f"{self.endpoint_url}/update",
+            json=user.model_dump(),
+            headers=get_auth_header(self.client._api_key),
+        )
+
+        if response.status_code != 200:
+            raise RecommendApiException(response.text)
+        return UpdateUserResponse.model_validate(response.json())
+
+    def delete_user(self, user_id: Union[str, UUID]) -> DeleteUserResponse:
+        """
+        Delete a user by ID.
+        """
+        if isinstance(user_id, UUID):
+            user_id = str(user_id)
+
+        response = requests.delete(
+            f"{self.endpoint_url}{user_id}",
+            headers=get_auth_header(self.client._api_key),
+        )
+        if response.status_code != 200:
+            raise RecommendApiException(response.text)
+        return DeleteUserResponse.model_validate(response.json())
+
+    def exists(self, user_id: Union[str, UUID]) -> bool:
+        """
+        Check if a user exists by ID.
+        """
+        if isinstance(user_id, UUID):
+            user_id = str(user_id)
+
+        response = requests.get(
+            f"{self.endpoint_url}exists/{user_id}",
+            headers=get_auth_header(self.client._api_key),
+        )
+        if response.status_code != 200:
+            raise RecommendApiException(response.text)
+        return response.json()
+
+    def delete_all_interactions(
+        self,
+        user_id: Union[str, UUID],
+    ) -> DeleteUserResponse:
+        """
+        Delete all interactions for a user.
+        """
+        if isinstance(user_id, UUID):
+            user_id = str(user_id)
+
+        response = requests.delete(
+            f"{self.endpoint_url}{user_id}/interactions",
+            headers=get_auth_header(self.client._api_key),
+        )
+        if response.status_code != 200:
+            raise RecommendApiException(response.text)
+        return DeleteUserResponse.model_validate(response.json())
+
+    def delete_interactions_by_property(
+        self,
+        user_id: Union[str, UUID],
+        interaction_property_name: str,
+    ) -> DeleteUserResponse:
+        """
+        Delete all interactions for a user and a specific property.
+        """
+        if isinstance(user_id, UUID):
+            user_id = str(user_id)
+
+        response = requests.delete(
+            f"{self.endpoint_url}{user_id}/interactions/{interaction_property_name}",
+            headers=get_auth_header(self.client._api_key),
+        )
+        if response.status_code != 200:
+            raise RecommendApiException(response.text)
+        return DeleteUserResponse.model_validate(response.json())
+
+    def delete_interactions_by_property_and_item(
+        self,
+        user_id: Union[str, UUID],
+        interaction_property_name: str,
+        item_id: Union[str, UUID],
+    ) -> DeleteUserResponse:
+        """
+        Delete specific interactions for a user, property, and item.
+        """
+        if isinstance(user_id, UUID):
+            user_id = str(user_id)
+        if isinstance(item_id, UUID):
+            item_id = str(item_id)
+
+        response = requests.delete(
+            f"{self.endpoint_url}{user_id}/interactions/{interaction_property_name}/{item_id}",
+            headers=get_auth_header(self.client._api_key),
+        )
+        if response.status_code != 200:
+            raise RecommendApiException(response.text)
+        return DeleteUserResponse.model_validate(response.json())

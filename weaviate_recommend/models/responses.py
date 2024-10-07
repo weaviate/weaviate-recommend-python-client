@@ -104,3 +104,11 @@ class AddUserInteractionsResponse(BaseModel):
 
 class CreateUserResponse(BaseModel):
     message: str
+
+
+class DeleteUserResponse(BaseModel):
+    message: str
+
+
+class UpdateUserResponse(BaseModel):
+    message: str

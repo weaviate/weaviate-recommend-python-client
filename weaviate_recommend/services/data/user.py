@@ -132,7 +132,7 @@ class _User:
         Update a user by ID.
         """
         response = requests.post(
-            f"{self.endpoint_url}/update",
+            f"{self.endpoint_url}update",
             json=user.model_dump(),
             headers=get_auth_header(self.client._api_key),
         )

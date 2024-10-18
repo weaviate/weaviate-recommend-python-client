@@ -22,7 +22,7 @@ To create the recommender schema, use the `create` method of your `WeaviateRecom
 import weaviate.classes.config as wvcc
 
 client.create(
-    collection_name="MyCollection",
+    name="MyCollection",
     properties={
         "property1": wvcc.DataType.TEXT,
         "property2": wvcc.DataType.NUMBER,
@@ -32,7 +32,7 @@ client.create(
     trainable_properties=[
         "property1",
         "property2"
-    ]
+    ],
     user_properties={
         "user_property1": wvcc.DataType.NUMBER,
         # Add more user properties as needed

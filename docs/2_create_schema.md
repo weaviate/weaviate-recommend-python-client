@@ -1,16 +1,37 @@
 # Creating the Recommender Schema
 
 ## Overview
+
 This guide explains how to create and configure the schema for your recommender system using the `WeaviateRecommendClient`.
 
 ## Why do I need a Schema for the Recommender Service?
 
-The Recommender Service Schema lets you achieve two key features:
+The Recommender Service Schema is crucial for two main reasons:
 
-1. Set Interaction Weights: The Recommender Schema enables weighting interactions such as "Add_To_Cart" more so than "Viewed_Item". This further lets you set negative weights for interactions such as "Dislike".
-2. Table Representation Learning (Advanced): Weaviate's Recommender Service leverages `BOOLEAN`, `INT`, `FLOAT`, and `TEXT`-encoded categories to compute vector representations.
+1. Data Structure and Training:
+   - The schema defines what your data looks like and specifies the data types.
+   - This information is essential for the recommender system to perform its training step effectively.
+
+2. Interaction Tracking:
+   - The schema allows you to define the types of interactions that will occur in your system.
+   - For example, you can specify interactions like "view", "like", or "purchase".
+
+Additionally, the schema enables two key features:
+
+3. Weighted Interactions:
+   - You can assign different weights to various interactions.
+   - For instance, you might want "Add_To_Cart" to have more influence than "Viewed_Item".
+   - You can even set negative weights for interactions like "Dislike".
+
+4. Text Search Capability:
+   - Alongside the trained recommendation vector, you can enable text-based search.
+   - This search can be based on one or multiple properties, which will be combined.
+   - Text search provides a natural entry point for many recommendation systems, allowing users to find items through traditional search before receiving personalized recommendations.
+
+By setting up a proper schema, you ensure that your recommender system has all the necessary information to provide accurate and relevant recommendations while also supporting flexible search options.
 
 ## Prerequisites
+
 - Established connection to the Recommender Service (see `1_connection.md`)
 - Understanding of your data model and recommendation requirements
 
@@ -38,7 +59,9 @@ client.create(
         # Add more user properties as needed
     },
     user_interaction_property_names=["purchase", "like", "view"],
-    text_search_property_name="property1"
+    text_search_property_name="property1"  # Can be a single property
+    # Or use multiple properties:
+    # text_search_property_name=["property1", "property3"]
 )
 ```
 
@@ -49,7 +72,7 @@ client.create(
 - `trainable_properties`: Properties used to compute the item vector representation.
 - `user_properties`: Dictionary of user properties and their data types.
 - `user_interaction_property_names`: List of interaction types you want to track.
-- `text_search_property_name`: Property to be used for text-based searches.
+- `text_search_property_name`: Property or list of properties to be used for text-based searches. If a list is provided, the text search will be performed on a combination of these properties.
 
 > **Note: Trainable Properties**
 >
@@ -78,7 +101,6 @@ To modify an existing schema, you need to delete the current recommender and cre
 
 ```python
 client.delete()
-# Then create a new schema as shown above
 ```
 
 ## Best Practices

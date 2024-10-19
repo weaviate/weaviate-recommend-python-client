@@ -59,7 +59,7 @@ class WeaviateRecommendClient:
         properties: Dict[str, DataType],
         user_properties: Dict[str, DataType],
         user_interaction_property_names: List[str],
-        text_search_property_name: Union[str, None] = None,
+        text_search_property_name: Union[str, List[str], None] = None,
         trainable_properties: Union[List[str], None] = None,
     ) -> CreateRecommenderResponse:
         """
@@ -70,7 +70,7 @@ class WeaviateRecommendClient:
             properties (Dict[str, DataType]): _description_
             user_properties (Dict[str, DataType]): _description_
             user_interaction_property_names (List[str]): _description_
-            text_search_property_name (Union[str, None], optional): _description_. Defaults to None.
+            text_search_property_name (Union[str, List[str], None], optional): _description_. Defaults to None.
             trainable_properties (Union[List[str], None], optional): _description_. Defaults to None.
         """
         return self._recommender_management.create(

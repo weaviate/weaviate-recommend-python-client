@@ -27,7 +27,7 @@ class _RecommenderManagement:
         properties: Dict[str, DataType],
         user_properties: Dict[str, DataType],
         user_interaction_property_names: List[str],
-        text_search_property_name: Union[str, None] = None,
+        text_search_property_name: Union[str, List[str], None] = None,
         trainable_properties: Union[List[str], None] = None,
     ) -> CreateRecommenderResponse:
         """

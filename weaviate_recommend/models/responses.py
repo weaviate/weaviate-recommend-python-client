@@ -75,7 +75,7 @@ class RecommenderDetailsResponse(BaseModel):
     item_collection_name: str | None
     user_collection_name: str | None
     interaction_property_names: List[str] | None
-    text_search_property_name: str | None
+    text_search_property_name: str | List[str] | None
     created_at: datetime
     training_state: TRAINING_STATE
     trainable_properties: List[str] | None

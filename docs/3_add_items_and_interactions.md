@@ -38,8 +38,8 @@ To add multiple items efficiently:
 from weaviate_recommend.models.data import RecommenderItem
 
 items = [
-    RecommenderItem(uuid="id1", properties={"property1": "value1", ...}),
-    RecommenderItem(uuid="id2", properties={"property1": "value2", ...}),
+    RecommenderItem(id="id1", properties={"property1": "value1", ...}),
+    RecommenderItem(id="id2", properties={"property1": "value2", ...}),
     # Add more items as needed
 ]
 
